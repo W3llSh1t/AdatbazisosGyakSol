@@ -9,16 +9,16 @@ namespace AdatbazisosGyakProj
 {
     internal class Program
     {
-        public class MyDbContext : DbContext
-        {
-            public DbSet<Blog> MyEntities { get; set; }
+        //public class MyDbContext : DbContext
+        //{
+        //    public DbSet<Blog> MyEntities { get; set; }
 
-            protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            {
-                optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
-            }
+        //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //    {
+        //        optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
+        //    }
 
-        }
+        //}
         public class Blog
         {
             public int BlogId { get; set; }
@@ -41,6 +41,10 @@ namespace AdatbazisosGyakProj
         {
             public DbSet<Blog> Blogs { get; set; }
             public DbSet<Post> Posts { get; set; }
+            protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+            {
+                optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=BloggingContext;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
+            }
         }
 
         static void Main(string[] args)
@@ -53,6 +57,7 @@ namespace AdatbazisosGyakProj
 
                 var blog = new Blog { Name = name };
                 db.Blogs.Add(blog);
+                db.Posts.Add(new Post { Blog = blog, Title = "Title", Content = "Content" });
                 db.SaveChanges();
 
                 // Display all Blogs from the database
